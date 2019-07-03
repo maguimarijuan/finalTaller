@@ -160,7 +160,7 @@ class Juego
         Juego();
         ~Juego() = default;
         void gameLoop();
-        vector<struct desaparecido*> getDesaparecidos();
+        vector<struct desaparecido> getDesaparecidos();
 
     private:
     int cantidadDeEnemigos;
@@ -171,7 +171,7 @@ class Juego
     Personaje* personajeIzquierda;
     vector<Personaje*> personajes;
     vector<Personaje*> enemigos;
-    vector<struct desaparecido*> desaparecidos;
+    vector<struct desaparecido> desaparecidos;
     void setPersonajesDerechaIzquierda();
 
 };
@@ -255,7 +255,7 @@ void Juego::setPersonajesDerechaIzquierda(){
 void Juego::gameLoop()
 {
 
-    while(true){
+    for (int x = 0; x < 10; x++){
         /*
         if (cantidadDePersonajesVivos == 0 || cantidadDeEnemigosVivos == 0) return;
         Posicion* poscDerecha = personajeDerecha->getPosicion();
@@ -281,21 +281,21 @@ void Juego::gameLoop()
     }
 }
 
-int compararDistancias(desaparecido* elemento1, desaparecido* elemento2)
+int compararDistancias(desaparecido elemento1, desaparecido elemento2)
 {
-    return (elemento1->distanciaRecorrida >  elemento2 -> distanciaRecorrida) ? 1: -1;
+    return (elemento1.distanciaRecorrida >  elemento2 . distanciaRecorrida) ? 1: -1;
 }
 
-vector<struct desaparecido*> Juego::getDesaparecidos()
+vector<struct desaparecido> Juego::getDesaparecidos()
 {
 
     for(int i = 0; i < cantidadDePersonajes; i ++)
     {
         if(personajes[i]->estaMuerto())
         {
-            struct desaparecido* aux = (struct desaparecido*) malloc(sizeof(struct desaparecido));
-            aux->nombre = personajes[i]->getNombre();
-            aux->distanciaRecorrida = personajes[i]->getDistanciaRecorrida();
+            struct desaparecido aux;
+            aux.nombre = personajes[i]->getNombre();
+            aux.distanciaRecorrida = personajes[i]->getDistanciaRecorrida();
             desaparecidos.push_back(aux);
         }
     }
@@ -308,10 +308,10 @@ int main()
 {
     Juego* juego = new Juego();
     juego->gameLoop();
-    vector<struct desaparecido*> desaparecidos = juego->getDesaparecidos();
-    vector<struct desaparecido*>::iterator desaparecidos_it;
+    vector<struct desaparecido> desaparecidos = juego->getDesaparecidos();
+    vector<struct desaparecido>::iterator desaparecidos_it;
     for(desaparecidos_it = desaparecidos.begin(); desaparecidos_it!= desaparecidos.end(); ++desaparecidos_it){
-        cout<< (*desaparecidos_it)->nombre<< " " << (*desaparecidos_it)->distanciaRecorrida << "\n";
+        cout<< (*desaparecidos_it).nombre<< " " << (*desaparecidos_it).distanciaRecorrida << "\n";
     }
     return 0;
 }
