@@ -53,7 +53,7 @@ int leerArchivosAtaques(std::string nombreArchivo, Ataque* ataques)
   FILE* archivo = fopen(nombreArchivo.c_str(), "r");
   int i = 0;
   while(!feof(archivo)){
-    fscanf(archivo,"%c %f %f %d %c \n",ataques[i].id , &ataques[i].x, &ataques[i].y, &ataques[i].energia, ataques[i].accion);
+    fscanf(archivo,"%s %f %f %d %s",ataques[i].id , &ataques[i].x, &ataques[i].y, &ataques[i].energia, ataques[i].accion);
     i++;
   }
   fclose(archivo);

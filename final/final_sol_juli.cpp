@@ -37,7 +37,7 @@ int lecturaPersonaje(Personaje* personaje){
   int i=0;
   FILE* file;
 
-  file = fopen("personaje.txt","r");
+  file = fopen("personajes.txt","r");
 
   for(;!feof(file);i++){
     fscanf(
