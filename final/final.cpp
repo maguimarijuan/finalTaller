@@ -67,7 +67,7 @@ int  gameloop(Ataque* ataques, Personaje personaje,
   bool huboColision = false;
   bool estaVivo= true;
   int i;
-  for(i = 0; i < cantidadDeAtaques; i++)
+  for(i = 0; i < cantidadDeAtaques-1; i++)
   {
     float xpi_personaje = personaje.xpi;
     float ypi_personaje = personaje.ypi;
@@ -92,7 +92,7 @@ int  gameloop(Ataque* ataques, Personaje personaje,
       ypd_personaje += 13;
     }
     if(strcmp(accion, "D") == 0){
-      xpi_personaje -= 10;
+      xpi_personaje += 10;
     }
     if(y_ataque <= ypd_personaje && y_ataque >= ypi_personaje) huboColision = true;
     //cout<<huboColision;
@@ -107,7 +107,7 @@ int  gameloop(Ataque* ataques, Personaje personaje,
     }
     else
     {
-      strcpy(resultados[i].id, "NO TOCO");
+      strcpy(resultados[i].id,ataques[i].id);
       resultados[i].distancia = -1;
       resultados[i].energia = energia;
     }
@@ -125,7 +125,12 @@ int main()
   int cantidadDeResultados = gameloop(ataques, personaje, cantidadDeAtaques, resultados);
 
   for(int i = 0; i < cantidadDeResultados; i++){
-    cout<<resultados[i].id << " \t\t"<< resultados[i].distancia << "\t\t" << resultados[i].energia << endl;
+    if (resultados[i].distancia == -1){
+      cout<<resultados[i].id << "\t\t"<< "NO TOCO" << "\t\t" << resultados[i].energia << endl;
+    }
+    else{
+      cout<<resultados[i].id << "\t\t"<< resultados[i].distancia << "\t\t" << resultados[i].energia << endl;
+    }
   }
   return 0;
 }
