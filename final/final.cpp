@@ -64,16 +64,18 @@ int  gameloop(Ataque* ataques, Personaje personaje,
    int cantidadDeAtaques, Resultado* resultados)
 {
 
-  bool huboColision = false;
-  bool estaVivo= true;
+
   int i;
   for(i = 0; i < cantidadDeAtaques-1; i++)
   {
+    bool huboColision = false;
+    bool estaVivo= true;
     float xpi_personaje = personaje.xpi;
     float ypi_personaje = personaje.ypi;
     float xpd_personaje = personaje.xpd;
     float ypd_personaje = personaje.ypd;
     int energia = personaje.energia;
+
     if(energia < 0) estaVivo = false;
 
     char* accion = ataques[i].accion;
@@ -95,8 +97,8 @@ int  gameloop(Ataque* ataques, Personaje personaje,
       xpi_personaje += 10;
     }
     if(y_ataque <= ypd_personaje && y_ataque >= ypi_personaje) huboColision = true;
-    //cout<<huboColision;
-    //cout<<estaVivo;
+
+
     if(huboColision && estaVivo){
       strcpy(resultados[i].id ,ataques[i].id);
       float distancia = xpi_personaje - x_ataque;
@@ -105,7 +107,7 @@ int  gameloop(Ataque* ataques, Personaje personaje,
       personaje.energia = energia - energia_ataque;
       resultados[i].energia = personaje.energia;
     }
-    else
+    if(!huboColision || !estaVivo)
     {
       strcpy(resultados[i].id,ataques[i].id);
       resultados[i].distancia = -1;

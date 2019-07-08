@@ -105,6 +105,7 @@ int gameLoop(Pozo* pozos, int cantidadDePozos, Tanque* tanques, int cantidadDeTa
         if(entraTanqueEnPozo(tanques[i], pozos[j])){
           if(cambiarSigno(xii-tanques[i].xii) < distanciaRecorridaActual)
           {
+              //cout<<"llegó acá"<<endl;
             strcpy(aux.idTanque, tanques[i].idTanque);
             strcpy(aux.idPozo, pozos[j].idPozo);
             aux.distancia = cambiarSigno(xii-tanques[i].xii);
@@ -120,7 +121,8 @@ int gameLoop(Pozo* pozos, int cantidadDePozos, Tanque* tanques, int cantidadDeTa
         }
       }
     }
-    if(strcmp(aux.idTanque, "no toco") == 1) {
+    if(strcmp(aux.idTanque, "no toco") != 0) {
+      //cout<<"llegó acá"<<endl;
       strcpy(resultados[cantidadDeResultados].idTanque, aux.idTanque);
       strcpy(resultados[cantidadDeResultados].idPozo, aux.idPozo);
       resultados[cantidadDeResultados].distancia = aux.distancia;
@@ -128,6 +130,15 @@ int gameLoop(Pozo* pozos, int cantidadDePozos, Tanque* tanques, int cantidadDeTa
     }
   }
   return cantidadDeResultados;
+}
+
+int comparar(const void * a1, const void* a2){
+  float distancia1 = ((Resultado*)a1)->distancia;
+  float distancia2 = ((Resultado*)a2)->distancia;
+  if (distancia1 > distancia2) return 1;
+  if (distancia1 == distancia2) return 0;
+  return -1;
+
 }
 
 int main()
@@ -138,9 +149,10 @@ int main()
   int cantidadDeTanques = cargarTanques(tanques);
   Resultado resultados[20];
   int cantidadDeResultados = gameLoop(pozos, cantidadDePozos, tanques,cantidadDeTanques, resultados);
-  cout<< "ID TANQUE" << "/t/t" << "ID POZO"<< "/t/t" << "DISTANCIA" << endl;
+  qsort(resultados, cantidadDeResultados, sizeof(Resultado), comparar);
+  cout<< "ID TANQUE" << "\t\t" << "ID POZO"<< "\t\t" << "DISTANCIA" << endl;
   for(int i = 0; i < cantidadDeResultados; i++){
-    cout<< resultados[i].idTanque << "/t/t" <<  resultados[i].idPozo << "/t/t" <<  resultados[i].distancia <<endl;
+    cout<< resultados[i].idTanque << "\t\t" <<  resultados[i].idPozo << "\t\t" <<  resultados[i].distancia <<endl;
   }
 
 }
