@@ -15,6 +15,19 @@ typedef struct{
 } Rectangulo;
 
 typedef struct{
+  char id_rec1 [20];
+  char id_rec2 [20];
+  float xii;
+  float xid;
+  float yid;
+  float yii;
+  float xsi;
+  float xsd;
+  float ysi;
+  float ysd;
+} PreResultado;
+
+typedef struct{
   float distancia;
   float area;
   char id_rec1 [20];
@@ -37,9 +50,61 @@ int leerRectangulos(Rectangulo* rectangulos){
   return i;
 }
 
+bool colisionan(Rectangulo rect1, Rectangulo rect2){
+
+}
+
+void obtenerRectanguloInterno(PreResultados* preresultados, int cantPresultados, Rectangulo rect1, Rectangulo rect2){
+
+}
+
+bool estaEnPreResultado(Rectangulo rect, PreResultado preResultado){
+
+}
+
+bool colisionan(Rectangulo rect, PreResultado preresultado){
+
+}
+
+float obtenerAreaResultado(Rectangulo rect, PreResultado preresultado){
+
+}
+
+float obtenerDistancia(Rectangulo rect, PreResultado preresultado){
+  
+}
 
 
 int procesarRectangulos(Rectangulo* rectangulos, int cantidadDeRectangulos, Resultado* resultados){
+
+  PreResultado preResultados [20];
+  int cantPresultados = 0;
+
+  for(int i = 0; i < cantidadDeRectangulos; i++){
+    for(int j = 0; j < cantidadDeRectangulos; j++){
+      if (i == j) continue;
+      if(colisionan(rectangulos[i],rectangulos[j])){
+        obtenerRectanguloInterno(preResultados, cantPresultados, rectangulos[i], rectangulos[j]);
+        cantPresultados++:
+      }
+    }
+  }
+  int cantidadDeResultados = 0;
+  for(int i = 0; i < cantPresultados; i++){
+    for(int j = 0;  j < cantidadDeRectangulos; j++){
+      if(estaEnPreResultado(rectangulo[j], preResultados[i]) continue;
+      if(colisionan(rectangulo[j], preResultado[i])){
+        float area = obtenerAreaResultado(rectangulo[j], preResultado[i]);
+        float distancia = obtenerDistancia(rectangulo[j], preResultado[i]);
+        resultados[cantidadDeResultados].distancia = distancia;
+        resultados[cantidadDeResultados].area = area;
+        strcpy(resultados[cantidadDeResultados].id_rec1,preResultado[i].id_rec1);
+        strcpy(resultados[cantidadDeResultados].id_rec2,preResultado[i].id_rec2);
+        strcpy(resultados[cantidadDeResultados].id_rec3,rectangulo[j].id_rec);
+        cantidadDeResultados ++;
+      }
+    }
+  }
 
 }
 
