@@ -39,7 +39,7 @@ int leerRectangulos(Rectangulo* rectangulos){
     rectangulos[i].xsi = rectangulos[i].xii;
     rectangulos[i].ysi = rectangulos[i].ysd;
   }
-  fclose("rectangulos.txt");
+  fclose(archivo);
   return i;
 }
 
@@ -78,25 +78,25 @@ Rectangulo obtenerRectanguloInterno(Rectangulo rectDerecha, Rectangulo rectIzqui
     aux.ysd = rectDerecha.ysd;
   }
 
-  strcpy(aux.idrec, "aux");
+  strcpy(aux.id_rec, "aux");
   return aux;
 }
 
-void obtenerRectanguloInterno(PreResultados* preresultados, int cantPresultados, Rectangulo rect1, Rectangulo rect2){
+void obtenerRectanguloInterno(PreResultado* preResultados, int cantPresultados, Rectangulo rect1, Rectangulo rect2){
   Rectangulo aux;
   //el rectangulo 2 está a la derecha;
   if (rect2.xii < rect1.xid){
     aux = obtenerRectanguloInterno(rect2, rect1);
-    strcpy(preResultado[cantPresultados].id_derecha, rect2.id_rec);
-    strcpy(preResultado[cantPresultados].id_izquierda,rect1.id_rec);
+    strcpy(preResultados[cantPresultados].id_derecha, rect2.id_rec);
+    strcpy(preResultados[cantPresultados].id_izquierda,rect1.id_rec);
   }
   // el rectangulo 1 está a la izquierda;
   else{
      aux = obtenerRectanguloInterno(rect1, rect2);
-     strcpy(preResultado[cantPresultados].id_derecha, rect1.id_rec);
-     strcpy(preResultado[cantPresultados].id_izquierda);
+     strcpy(preResultados[cantPresultados].id_derecha, rect1.id_rec);
+     strcpy(preResultados[cantPresultados].id_izquierda, rect2.id_rec);
    }
-   preResultado[cantPresultados].rect = aux;
+   preResultados[cantPresultados].rect = aux;
    return;
 
 }
@@ -107,7 +107,7 @@ bool estaEnPreResultado(Rectangulo rect, PreResultado preResultado){
   return false;
 }
 
-bool colisionan(Rectangulo rect, PreResultado preresultado){
+bool colisionan(Rectangulo rect, PreResultado preResultado){
   return(colisionan(rect, preResultado.rect));
 }
 
@@ -118,7 +118,7 @@ void cambiarNegativo(float* numero){
   }
 }
 
-float obtenerAreaResultado(Rectangulo rect, PreResultado preresultado){
+float obtenerAreaResultado(Rectangulo rect, PreResultado preResultado){
   Rectangulo aux;
   if (preResultado.rect.xii < rect.xid) aux = obtenerRectanguloInterno(preResultado.rect, rect);
   // el rectangulo 1 está a la izquierda;
@@ -130,12 +130,12 @@ float obtenerAreaResultado(Rectangulo rect, PreResultado preresultado){
   return(base * altura);
 }
 
-float obtenerDistancia(Rectangulo rect, PreResultado preresultado){
+float obtenerDistancia(Rectangulo rect, PreResultado preResultado){
   Rectangulo aux;
   if (preResultado.rect.xii < rect.xid) aux = obtenerRectanguloInterno(preResultado.rect, rect);
   // el rectangulo 1 está a la izquierda;
   else aux = obtenerRectanguloInterno(rect, preResultado.rect);
-  float distancia = sqrt(pow(aux.xii,2) + pow(aux.yii,2))
+  float distancia = sqrt(pow(aux.xii,2) + pow(aux.yii,2));
   return distancia;
 }
 
@@ -150,22 +150,22 @@ int procesarRectangulos(Rectangulo* rectangulos, int cantidadDeRectangulos, Resu
       if (i == j) continue;
       if(colisionan(rectangulos[i],rectangulos[j])){
         obtenerRectanguloInterno(preResultados, cantPresultados, rectangulos[i], rectangulos[j]);
-        cantPresultados++:
+        cantPresultados++;
       }
     }
   }
   int cantidadDeResultados = 0;
   for(int i = 0; i < cantPresultados; i++){
     for(int j = 0;  j < cantidadDeRectangulos; j++){
-      if(estaEnPreResultado(rectangulo[j], preResultados[i]) continue;
-      if(colisionan(rectangulo[j], preResultado[i])){
-        float area = obtenerAreaResultado(rectangulo[j], preResultado[i]);
-        float distancia = obtenerDistancia(rectangulo[j], preResultado[i]);
+      if(estaEnPreResultado(rectangulos[j], preResultados[i])) continue;
+      if(colisionan(rectangulos[j], preResultados[i])){
+        float area = obtenerAreaResultado(rectangulos[j], preResultados[i]);
+        float distancia = obtenerDistancia(rectangulos[j], preResultados[i]);
         resultados[cantidadDeResultados].distancia = distancia;
         resultados[cantidadDeResultados].area = area;
-        strcpy(resultados[cantidadDeResultados].id_rec1,preResultado[i].id_derecha);
-        strcpy(resultados[cantidadDeResultados].id_rec2,preResultado[i].id_izquierda);
-        strcpy(resultados[cantidadDeResultados].id_rec3,rectangulo[j].id_rec);
+        strcpy(resultados[cantidadDeResultados].id_rec1,preResultados[i].id_derecha);
+        strcpy(resultados[cantidadDeResultados].id_rec2,preResultados[i].id_izquierda);
+        strcpy(resultados[cantidadDeResultados].id_rec3,rectangulos[j].id_rec);
         cantidadDeResultados ++;
       }
     }
@@ -174,9 +174,9 @@ int procesarRectangulos(Rectangulo* rectangulos, int cantidadDeRectangulos, Resu
 
 }
 
-int comparar(void* r1, void* r2){
-  float distancia1 = (Resultado*) r1-> distancia;
-  float distancia2 = (Resultado*) r2-> distancia;
+int comparar(const void* r1, const void* r2){
+  float distancia1 = ((Resultado*) r1)-> distancia;
+  float distancia2 = ((Resultado*) r2)-> distancia;
   if(distancia1 > distancia2) return 1;
   if(distancia1 == distancia2) return 0;
   return -1;
@@ -186,8 +186,8 @@ int comparar(void* r1, void* r2){
 int main(){
   Rectangulo rectangulos[20];
   int cantidadDeRectangulos = leerRectangulos(rectangulos);
-  Resultados resultados[20];
-  int cantidadDeResultados = procesarRectangulos(retangulos,cantidadDeRectangulos,Resultados);
+  Resultado resultados[20];
+  int cantidadDeResultados = procesarRectangulos(rectangulos,cantidadDeRectangulos,resultados);
   qsort(resultados, cantidadDeResultados, sizeof(Resultado), comparar);
   cout<<"DISTANCIA"<<"\t\t"<<"AREA"<<"\t\t"<<"ID REC 1"<<"\t\t"<<"ID REC 2"<<"\t\t"<<"ID REC 3"<< endl;
   for(int i = 0; i < cantidadDeResultados; i++){
